@@ -1,2 +1,2 @@
 # MusicBell
-A script to play music at specific times
+A script to play music at specific times.
