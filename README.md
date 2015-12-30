@@ -11,6 +11,4 @@ and 'class_starting.aif'.
 3. Terminal Notifier for the Mac OS X notifications.
 
 # Setup
-Create the musicbell directory in /usr/local/ and copy the script there. Copy
-the launch agent plist into /Library/LaunchAgents and load it. Install Terminal
-Notifier.
+Create the musicbell directory in /usr/local/ and copy the script there. Copy the launch agent plist into /Library/LaunchAgents and load it. Install Terminal Notifier.
