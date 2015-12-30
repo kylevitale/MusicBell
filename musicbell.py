@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #
-# Version 2/13/2015
-import random
+# Version 12/30/2015
+# Kyle Vitale
+
 import os
 import time
 import sys
@@ -14,11 +15,13 @@ starting_song_length = 2 #How many mins long is the song
 TERMINAL_NOTIFIER="/Applications/Utilities/terminal-notifier.app/Contents/MacOS/terminal-notifier"
 
 def class_over():
+    '''Plays the class ending song and shows a class ending alert'''
     os.system('%s -title ":Alerts:" -message "Class is about to END..."' % (TERMINAL_NOTIFIER))
     os.system('Afplay %s' % (ENDING_SONG))
     os.system('ntpdate -u pool.ntp.org')
 
 def class_starting():
+    '''Plays the class starting song and shows a class starting alert'''
     os.system('osascript -e "set Volume 10"')
     os.system('%s -title ":Alerts: -message" "Class is about to BEGIN..."' % (TERMINAL_NOTIFIER))
     os.system('Afplay %s' % (ENDING_SONG))
@@ -27,17 +30,17 @@ def class_starting():
 
 #Tuple for when there is no class. (Month,Day) format. These will need to be updated
 #yearly. Long breaks set in different spot.
-no_class (
-    (9,14),(9,23)(10,12),(10,13)(11,25),(11,26),(11,27),(1,18)(2,15)
+no_class = (
+    (9,14),(9,23),(10,12),(10,13),(11,25),(11,26),(11,27),(12,30),(1,18),(2,15)
 )
 
 #Tuple for when you want class starting music to play. (Hour,Min) format.
 class_start_times = (
-    (8,15),(8,45),(9,30),(10,15),(11,0),(11,45)(12,30),(13,15),(14,0),(14,45),
+    (8,15),(8,45),(9,30),(10,15),(11,0),(11,45),(12,30),(13,15),(14,0),(14,45),
     (15,30)
 )
 
-#Tuple for when you want class ending music to play.
+#Tuple for when you want class ending music to play. (Hour,Min) format.
 class_end_times = (
     (8,40),(9,25),(10,10),(10,55),(11,40),(12,25),(13,10),(13,55),(14,40),
     (15,25)
@@ -58,6 +61,11 @@ MONTH = int(time.strftime('%m'))
 if MONTH in (7,8) or DAY in ('Sat','Sun'):
     sys.exit(0)
 
+# No School on these days
+for date in no_class:
+    if date == (MONTH,TODAY):
+        sys.exit(0)
+
 # Winter Break
 if (MONTH == 12 and TODAY >= WINTER_BRK_START) or (MONTH == 1 and
     TODAY <= WINTER_BRK_END):
@@ -73,7 +81,8 @@ if (MONTH == 9 and TODAY < FIRSTDAY) or (MONTH == 6 and TODAY > LASTDAY):
     sys.exit(0)
 
 # If the above all pass then proceed to main loop.
-while True:
+HOUR = int(time.strftime("%H"))
+while HOUR >= 17:
 
     HOUR = int(time.strftime("%H"))
     MIN = int(time.strftime("%M"))
@@ -90,8 +99,4 @@ while True:
         (MIN == (end_time[0][1] - ending_song_length)%60)):
             class_ending()
 
-    #Check is school day is over.
-    if HOUR >= 5:
-        sys.exit(0)
-    else:
-        time.sleep(1) #Wait 1 sec before trying again
+    time.sleep(1) #Wait 1 sec before trying again
